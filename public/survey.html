@@ -142,7 +142,7 @@
           <div class="modal-content">
             <h4>Meet Your New Match</h4>
             <h5 id="matchName"></h5>
-            <img id="matchPic" src="" alt="No Image" width = 250px>
+            <img id="matchImage" src="" alt="No Image" width = 250px>
           </div>
         <div class="modal-footer">
           <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Done</a>
@@ -200,9 +200,10 @@ $(document).ready(function() {
             $.post(currentURL + "/api/friends", userInput, function(data) {
                 //Grab the result from the AJAX post so that the best match's name and photo are displayed.
                 $("#matchName").text(data.name);
-                $("#matchPic").attr("src", data.profilePic);
+                $("#matchImage").attr("src", data.profilePic);
 
             });
+            
             // Show the modal with the best match
                 $('.modal').modal();
 
