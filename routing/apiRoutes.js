@@ -21,11 +21,15 @@ router.post("/api/friends", function(req, res) {
 
 	// Capture the user input object
 		var userInput = req.body;
-		console.log('userInput = ' + JSON.stringify(userInput));
-		var userName = userInput.name;
-		console.log("userName = " + userName);
+		
+		
+		console.log("userInput " + JSON.stringify(userInput));
+	
 		var userResponses = userInput.scores;
-		console.log('userResponses = ' , userResponses);
+		console.log("User Input scores " + userResponses);
+
+		var userImage = userInput.profilePic;
+		console.log("User Input image " + JSON.stringify(userImage));
 
 
 		// Take the user input scores and for each person in the friends array
@@ -33,43 +37,39 @@ router.post("/api/friends", function(req, res) {
 		// Take each calucated value and store it in it's own array
 
 	
-		// Compute best friend match
-		var matchName = '';
-		var matchImage = '';
-		var totalDifference = 100; // Make the initial value big for comparison
-
-	// 	// Examine all existing friends in the list
+		
+	 	// Examine all existing friends in the list
 		for (var i = 0; i < friends.length; i++) {
-			console.log('friend = ' + JSON.stringify(friends[i]));
+			// console.log('friend = ' + JSON.stringify(friends[i]));
 
-			// Compute differenes for each question
+		// 	// Compute differenes for each question
 			var diff = 0;
 			for (var j = 0; j < userResponses.length; j++) {
 				diff += Math.abs(friends[i].scores[j] - userResponses[j]);
 			}
-			console.log('diff = ' + diff);
-
-	// 		// If lowest difference, record the friend match
+		// 	// console.log('diff = ' + diff);
+			var totalDifference = 100;
+		// 	// If lowest difference, record the friend match
 			if (diff < totalDifference) {
+				
+				totalDifference = diff;
+				matchName = friends[i].name;
+				matchImage = friends[i].photo;
 				console.log('Closest match found = ' + diff);
 				console.log('Friend name = ' + friends[i].name);
 				console.log('Friend image = ' + friends[i].photo);
 
-				totalDifference = diff;
-				matchName = friends[i].name;
-				matchImage = friends[i].photo;
 			}
 		}
 
-	// 	// Add new user
+	 	// Add new user to server instances when server is restarted the new user is not added to friends.js
 		friends.push(userInput);
-
 		
-		res.send({ matchName: matchName,
+		res.json({ matchName: matchName,
 				   matchImage: matchImage});
 	});
 	
-
+// console log statements are commented out currently. Can be uncommented for troubleshooting purposes.
  
 
 module.exports = router;
