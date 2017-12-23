@@ -200,7 +200,7 @@ $(document).ready(function() {
             $.post(currentURL + "/api/friends", userInput, function(data) {
                 //Grab the result from the AJAX post so that the best match's name and photo are displayed.
                 $("#matchName").text(data.name);
-                $("#matchImage").attr("src", data.profilePic);
+                $("#matchImage").attr("src", data.photo);
 
             });
             

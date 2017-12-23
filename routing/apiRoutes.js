@@ -19,6 +19,12 @@ router.get("/api/friends", function(req, res) {
 router.post("/api/friends", function(req, res) {
 	// This will be used to handle incoming survey results. This route will also be used to handle the compatibility logic. 
 
+	var friendMatch = {
+			name: "",
+			photo: "",
+			
+		};
+
 	// Capture the user input object
 		var userInput = req.body;
 		
@@ -36,37 +42,39 @@ router.post("/api/friends", function(req, res) {
 		// compute the absolute value difference value in the arrays.
 		// Take each calucated value and store it in it's own array
 
-	
-		
+			var totalDifference = 100;
+			var diff = 0;
 	 	// Examine all existing friends in the list
 		for (var i = 0; i < friends.length; i++) {
 			// console.log('friend = ' + JSON.stringify(friends[i]));
-
+			diff = 0;
 		// 	// Compute differenes for each question
-			var diff = 0;
+			
 			for (var j = 0; j < userResponses.length; j++) {
-				diff += Math.abs(friends[i].scores[j] - userResponses[j]);
+				diff += Math.abs(parseInt(friends[i].scores[j]) - parseInt(userResponses[j]));
+				// console.log("Diff1 " + diff)
 			}
 		// 	// console.log('diff = ' + diff);
-			var totalDifference = 100;
+			
 		// 	// If lowest difference, record the friend match
 			if (diff < totalDifference) {
 				
 				totalDifference = diff;
-				matchName = friends[i].name;
-				matchImage = friends[i].photo;
-				console.log('Closest match found = ' + diff);
-				console.log('Friend name = ' + friends[i].name);
-				console.log('Friend image = ' + friends[i].photo);
+				// console.log("totalDifference " + totalDifference)
+				// console.log("Diff " + diff);
+				friendMatch.name = friends[i].name;
+				friendMatch.photo = friends[i].photo;
 
 			}
+				
 		}
 
 	 	// Add new user to server instances when server is restarted the new user is not added to friends.js
 		friends.push(userInput);
 		
-		res.json({ matchName: matchName,
-				   matchImage: matchImage});
+		res.json(friendMatch);
+				
+				 
 	});
 	
 // console log statements are commented out currently. Can be uncommented for troubleshooting purposes.
